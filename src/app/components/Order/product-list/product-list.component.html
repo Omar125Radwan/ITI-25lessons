@@ -1,0 +1,59 @@
+<!-- <div class="text-secondary">
+  [To be Removed] For test:
+  {{selectedCatID}}
+  <button class="btn btn-primary" (click)="changeCat()">change Category</button>
+  Today's Date : {{ orderDate | date: 'longDate'}}
+</div> -->
+<hr>
+<table class="table">
+  <thead class="bg-dark text-light">
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Image</th>
+      <th>Av. Quantity</th>
+      <th>Price in USD</th>
+      <th>Price in EGP</th>
+      <th>Count</th>
+      <th>Details</th>
+      <th>Add</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- [class.d-none]="selectedCatID!= prd.categoryID && selectedCatID !=0" [class.bg-warning]="prd.quantity == 0" -->
+    <!-- [hidden]="prd.quantity == 0" -->
+    <!-- index as i; trackBy:prdTrackByFn -->
+    <ng-container *ngFor="let prd of prdListOfCat; let i = index">
+        <!-- *ngIf="prd.quantity != 0" -->
+        <tr [ngClass]="{'bg-warning': prd.quantity == 0}">
+          <!-- safe navigation operator -->
+          <td>{{i + 1}}</td>
+          <td>{{prd.name}}</td>
+          <td>
+            <img LightBox="red" defaultColor="gray" [src]="prd.imgURL" alt="">
+          </td>
+          <td>
+            <!-- {{prd.quantity}} -->
+            <ng-container [ngSwitch]="prd.quantity">
+              <div *ngSwitchCase="0" class="text-danger">Out of stock</div>
+              <div *ngSwitchCase="1">last item!</div>
+              <div *ngSwitchCase="2">last 2 items!</div>
+              <div *ngSwitchDefault>{{prd.quantity}}</div>
+            </ng-container>
+          </td>
+          <td>{{prd.price | currency}}</td>
+          <td>{{prd.price | uSDtoEGP | currency: 'EGP'}}</td>
+          <!-- Template Variable -->
+          <td><input #itemsCount type="number" style="width: 100px;" class="form-control"></td>
+          <!-- (click)="openPrdDetails(prd.id, prd.name)" -->
+          <td><button class="btn btn-primary" [routerLink]="['/Products', prd.id]">Details</button></td>
+          <td><button class="btn bnt-secondary" (click)="buy(prd.price, itemsCount.value)">Add to cart</button></td>
+        </tr>
+    </ng-container>
+  </tbody>
+</table>
+
+<hr>
+<!-- <h3>Order Total Price: {{orderTotalPrice}} </h3> -->
+
+<a class="btn btn-success my-3" [routerLink]="['/Product/Add']">Add New Product</a>

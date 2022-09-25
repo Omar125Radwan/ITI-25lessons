@@ -1,0 +1,42 @@
+<!-- <button type="button" class="btn btn-secondary my-3" (click)="addProudct()">Add Product</button> -->
+<div class="text-danger">
+  <h3>TO be Removed [For test]</h3>
+  <div>
+    {{newPrd | json}}
+  </div>
+  <div>
+    <!-- {{prdNameInp.className | json}} -->
+  </div>
+</div>
+<hr>
+<form #prdFrm="ngForm" (ngSubmit)="addProduct()">
+  <div class="mb-3">
+    <label for="pName" class="form-label">Product Name</label>
+    <input #prdNameInp="ngModel" type="text" class="form-control" id="pName" name="prdname" [(ngModel)]="newPrd.name" required pattern="[A-Za-z]{3,}">
+    <div class="alert alert-danger" [hidden]="prdNameInp.valid || prdNameInp.untouched">
+      <small *ngIf="prdNameInp.errors?.['required']">-Name is required</small>
+      <br>
+      <small *ngIf="prdNameInp.errors?.['pattern']">-Name must be 3 letters at least</small>
+    </div>
+  </div>
+  <div class="mb-3">
+    <label for="pPrice" class="form-label">Product price</label>
+    <input type="number" class="form-control" id="pPrice" name="prdprice" [(ngModel)]="newPrd.price" required>
+  </div>
+  <div class="mb-3">
+    <label for="pQuantity" class="form-label">Product Quantity</label>
+    <input type="number" class="form-control" id="pQuantity" name="prdquant" [(ngModel)]="newPrd.quantity" required>
+  </div>
+  <div class="mb-3">
+    <label for="pCate" class="form-label">Product Category</label>
+    <select class="form-select" id="prdCat" name="cat" [(ngModel)]="newPrd.categoryID" required>
+      <option value="0" selected>All</option>
+      <option *ngFor="let cat of catList" [value]="cat.id">{{cat.name}}</option>
+    </select>
+  </div>
+  <div class="mb-3">
+    <label for="pImage" class="form-label">Product Image</label>
+    <input type="file" class="form-control" id="pImage" name="prdimg" [(ngModel)]="newPrd.imgURL">
+  </div>
+  <button [disabled]="prdFrm.invalid" type="submit" class="btn btn-primary">Submit</button>
+</form>

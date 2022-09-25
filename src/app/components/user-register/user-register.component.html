@@ -1,0 +1,84 @@
+<form [formGroup]="userRegFrm" class="container" (ngSubmit)="submit()">
+  <div class="mb-3">
+    <label for="fName" class="form-label">Full Name</label>
+    <input type="text" formControlName="fullName" class="form-control" id="fName" name="fname" [class.is-invalid]="fullName?.invalid && fullName?.touched" [class.is-valid]="fullName?.valid">
+    <div class="alert alert-warning" [hidden]="fullName?.valid || fullName?.untouched">
+      <small *ngIf="fullName?.errors?.['required']">Full Name is required</small>
+      <small *ngIf="fullName?.errors?.['pattern']">Full Name must be 3 letters at least, this {{fullName?.errors?.['pattern'].actualValue}} does not match</small>
+    </div>
+  </div>
+  <div class="mb-3">
+    <label for="email" class="form-label">Email</label>
+    <input type="email" formControlName="email" class="form-control" id="email">
+    <div class="alert alert-warning" [hidden]="email?.valid || email?.untouched">
+      <small *ngIf="email?.errors?.['required']">Email is required</small>
+      <small *ngIf="email?.errors?.['existEmail']">Email Must contain @ || {{email?.errors?.['EmailNotValid'].value}} not match</small>
+    </div>
+  </div>
+
+  <!---->
+  <div formArrayName="phoneNo" class="border p-2">
+    <button class="btn btn-success mb-3 me-2" (click)="addPhoneNumber($event)">Add Phone Number</button>
+    <div class="mb-3" *ngFor="let phoneNo of phoneNumbers.controls; let i = index;">
+      <label for="{{'userPhone' + i+1}}" class="form-label">Phone No. #{{i+1}}</label>
+      <input type="text" [formControlName]="i" class="form-control" id="{{'userPhone' + i+1}}">
+      <button class="btn btn-danger my-3" (click)="delPhoneNumber($event)">delete</button>
+    </div>
+  </div>
+  <!---->
+
+  <div class="no-border" style="width: 50%;" formGroupName="address">
+    <h3>Address</h3>
+    <div class="ms-5">
+      <div class="mb-3">
+        <label for="ucity" class="form-label">City</label>
+        <input type="text" formControlName="city" class="form-control" id="ucity">
+      </div>
+      <div class="mb-3">
+        <label for="upostalCode" class="form-label">Postal Code</label>
+        <input type="number" formControlName="postalCode" class="form-control" id="upostalCode">
+      </div>
+      <div class="mb-3">
+        <label for="ustreet" class="form-label">Street</label>
+        <input type="text" formControlName="street" class="form-control" id="ustreet">
+      </div>
+    </div>
+  </div>
+
+  <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+    <input type="radio" class="btn-check" formControlName="referral" name="referral" id="btnradio1" autocomplete="off" checked value="SocialMedia" (change)="updateReferralValidtor()">
+    <label class="btn btn-outline-primary" for="btnradio1">Social Media</label>
+
+    <input type="radio" class="btn-check" formControlName="referral" name="referral" id="btnradio2" autocomplete="off" value="Friends" (change)="updateReferralValidtor()">
+    <label class="btn btn-outline-primary" for="btnradio2">Friends</label>
+
+    <input type="radio" class="btn-check" formControlName="referral" name="referral" id="btnradio3" autocomplete="off" value="other" (change)="updateReferralValidtor()">
+    <label class="btn btn-outline-primary" for="btnradio3">Other</label>
+  </div>
+
+  <div class="mb-3 ms-3" *ngIf="referral?.value == 'other'">
+    <label for="rOther" class="form-label">Specify</label>
+    <input type="text" formControlName="referralOther" class="form-control" name="rOther" id="rOther">
+  </div>
+
+  <div class="mb-3">
+    <label for="upass" class="form-label">Password</label>
+    <input type="password" formControlName="password" class="form-control" id="upass">
+  </div>
+  <div class="mb-3">
+    <label for="usercpass" class="form-label">Confirm Password</label>
+    <input type="password" formControlName="confirmPassword" class="form-control" id="usercpass">
+  </div>
+  <button [disabled]="userRegFrm.invalid" type="submit" class="btn btn-primary mb-3 me-2" >Submit</button>
+</form>
+
+<hr>
+<div class="text-success">
+  <h3>To be removed [For test]:</h3>
+  <div>
+    {{userRegFrm.value | json}}
+  </div>
+  <div>
+    {{userRegFrm.get('referralOther')?.errors | json}}
+  </div>
+</div>

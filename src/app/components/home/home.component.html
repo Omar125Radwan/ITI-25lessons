@@ -1,0 +1,9 @@
+<img *ngIf="isImageShown" [src]="storeInfo.imgURL" alt="" class="imh-fluid">
+<button (click)="toggleImage()" [ngClass]="{'btn-danger': isImageShown, 'btn-primary': !isImageShown}" class="btn d-block mt-3" type="button">Toggle Image</button>
+<h1>{{ storeInfo.name }}</h1>
+<h3>Our Branches</h3>
+<ul>
+  <li *ngFor="let item of storeInfo.branches">
+    {{item}}
+  </li>
+</ul>
